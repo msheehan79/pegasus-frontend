@@ -124,11 +124,19 @@ FocusScope {
             enabled: Qt.platform.os === "android"
         },
         SettingsEntry {
-            label: QT_TR_NOOP("Only show existing games")
+            label: QT_TR_NOOP("Check for existing games")
             desc: QT_TR_NOOP("Check the game files and only show games that actually exist. You can disable this to improve loading times.")
             type: SettingsEntry.Type.Bool
             boolValue: Internal.settings.verifyFiles
             boolSetter: (val) => Internal.settings.verifyFiles = val
+            section: "gaming"
+        },
+        SettingsEntry {
+            label: QT_TR_NOOP("Show Missing Games")
+            desc: QT_TR_NOOP("Only active if \"Check for existing games\" is enabled. Will show games configured in metadata but missing files.")
+            type: SettingsEntry.Type.Bool
+            boolValue: Internal.settings.showMissingFiles
+            boolSetter: (val) => Internal.settings.showMissingFiles = val
             section: "gaming"
         },
         SettingsEntry {

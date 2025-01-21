@@ -115,6 +115,17 @@ void Settings::setVerifyFiles(bool new_val)
     emit verifyFilesChanged();
 }
 
+void Settings::setShowMissingFiles(bool new_val)
+{
+    if (new_val == AppSettings::general.show_missing_files)
+        return;
+
+    AppSettings::general.show_missing_files = new_val;
+    AppSettings::save_config();
+
+    emit showMissingFilesChanged();
+}
+
 QStringList Settings::gameDirs() const
 {
     QSet<QString> dirset;
