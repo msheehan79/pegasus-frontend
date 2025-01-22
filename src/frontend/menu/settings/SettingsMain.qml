@@ -132,7 +132,7 @@ FocusScope {
             section: "gaming"
         },
         SettingsEntry {
-            label: QT_TR_NOOP("Show Missing Games")
+            label: QT_TR_NOOP("Show missing games")
             desc: QT_TR_NOOP("Only active if \"Check for existing games\" is enabled. Will show games configured in metadata but missing files.")
             type: SettingsEntry.Type.Bool
             boolValue: Internal.settings.showMissingFiles
