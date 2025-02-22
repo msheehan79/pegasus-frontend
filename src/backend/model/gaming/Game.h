@@ -60,6 +60,7 @@ struct GameData {
     } playstats;
 
     bool is_favorite = false;
+    bool is_completed = false;
     bool fileExists = true;
 
     struct LaunchParams {
@@ -98,6 +99,7 @@ public:
     GETTER(int, playTime, playstats.play_time)
     GETTER(const QDateTime&, lastPlayed, playstats.last_played)
     GETTER(bool, isFavorite, is_favorite)
+    GETTER(bool, isCompleted, is_completed)
     GETTER(bool, getFileExists, fileExists)
 
     GETTER(const QString&, launchCmd, launch_params.launch_cmd)
@@ -120,6 +122,7 @@ public:
     SETTER(QString, LaunchCmdBasedir, launch_params.relative_basedir)
 
     Game& setFavorite(bool val);
+    Game& setCompleted(bool val);
     Game& setRating(float rating);
     Game& setPlayerCount(int player_count);
     Game& setFileExists(bool val);
@@ -156,6 +159,7 @@ public:
     Q_PROPERTY(int playTime READ playTime NOTIFY playStatsChanged)
     Q_PROPERTY(QDateTime lastPlayed READ lastPlayed NOTIFY playStatsChanged)
     Q_PROPERTY(bool favorite READ isFavorite WRITE setFavorite NOTIFY favoriteChanged)
+    Q_PROPERTY(bool completed READ isCompleted WRITE setCompleted NOTIFY completedChanged)
     Q_PROPERTY(bool fileExists READ getFileExists WRITE setFileExists NOTIFY fileExistsChanged)
 
     Q_PROPERTY(QVariantMap extra READ extraMap CONSTANT)
@@ -189,6 +193,7 @@ private:
 signals:
     void launchFileSelectorRequested();
     void favoriteChanged();
+    void completedChanged();
     void playStatsChanged();
     void fileExistsChanged();
 

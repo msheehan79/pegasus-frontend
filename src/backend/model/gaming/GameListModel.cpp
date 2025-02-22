@@ -40,6 +40,7 @@ enum Roles {
     PlayTime,
     LastPlayed,
     Favorite,
+    Completed,
     FileExists,
     Extra,
     Developer,
@@ -81,6 +82,7 @@ QHash<int, QByteArray> GameListModel::roleNames() const
         { Roles::PlayTime, QByteArrayLiteral("playTime") },
         { Roles::LastPlayed, QByteArrayLiteral("lastPlayed") },
         { Roles::Favorite, QByteArrayLiteral("favorite") },
+        { Roles::Completed, QByteArrayLiteral("completed") },
         { Roles::FileExists, QByteArrayLiteral("fileExists") },
         { Roles::Extra, QByteArrayLiteral("extra") },
         { Roles::Developer, QByteArrayLiteral("developer") },
@@ -122,6 +124,7 @@ QVariant GameListModel::data(const QModelIndex& index, int role) const
         case Roles::PlayTime: return game.playTime();
         case Roles::LastPlayed: return game.lastPlayed();
         case Roles::Favorite: return game.isFavorite();
+        case Roles::Completed: return game.isCompleted();
         case Roles::FileExists: return game.getFileExists();
         case Roles::Extra: return game.extraMap();
         case Roles::Developer: return game.developerStr();
@@ -144,6 +147,8 @@ void GameListModel::connectEntry(model::Game* const game)
 {
     connect(game, &model::Game::favoriteChanged,
             this, [this](){ onGamePropertyChanged({Roles::Favorite}); });
+    connect(game, &model::Game::completedChanged,
+            this, [this](){ onGamePropertyChanged({Roles::Completed}); });
     connect(game, &model::Game::fileExistsChanged,
             this, [this](){ onGamePropertyChanged({Roles::FileExists}); });
     connect(game, &model::Game::playStatsChanged,
