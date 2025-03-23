@@ -66,6 +66,13 @@ Game& Game::setFavorite(bool new_val)
     return *this;
 }
 
+Game& Game::setCompleted(bool new_val)
+{
+    m_data.is_completed = new_val;
+    emit completedChanged();
+    return *this;
+}
+
 Game& Game::setMissing(bool new_val)
 {
     m_data.missing = new_val;

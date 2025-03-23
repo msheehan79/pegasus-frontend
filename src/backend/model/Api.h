@@ -66,6 +66,7 @@ signals:
     void gameFileFinished(model::GameFile* const);
     void gameFileLaunched(model::GameFile* const);
     void favoritesChanged();
+    void completedChanged();
     void memoryChanged();
 
     // triggers translation update
@@ -88,6 +89,7 @@ public slots:
 private slots:
     // internal communication
     void onGameFavoriteChanged();
+    void onGameCompletedChanged();
     void onGameFileSelectorRequested();
     void onGameFileLaunchRequested();
 

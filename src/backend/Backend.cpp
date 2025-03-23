@@ -207,6 +207,8 @@ Backend::Backend(const CliArgs& args)
 
     QObject::connect(m_api_public, &model::ApiObject::favoritesChanged,
                      [this](){ onFavoritesChanged(); });
+    QObject::connect(m_api_public, &model::ApiObject::completedChanged,
+                     [this](){ onCompletedChanged(); });
 
     // Loading progress
     QObject::connect(m_providerman, &ProviderManager::scanStarted,
@@ -255,6 +257,11 @@ void Backend::onScanFinished()
 void Backend::onFavoritesChanged()
 {
     m_providerman->onFavoritesChanged(m_api_public->allGames()->entries());
+}
+
+void Backend::onCompletedChanged()
+{
+    m_providerman->onCompletedChanged(m_api_public->allGames()->entries());
 }
 
 void Backend::onProcessLaunched()

@@ -22,6 +22,7 @@
 #include "parsers/SettingsFile.h"
 
 #include "providers/pegasus_favorites/Favorites.h"
+#include "providers/pegasus_completed/Completed.h"
 #include "providers/pegasus_media/MediaProvider.h"
 #include "providers/pegasus_metadata/PegasusProvider.h"
 #include "providers/pegasus_playtime/PlaytimeStats.h"
@@ -132,6 +133,7 @@ std::vector<std::unique_ptr<providers::Provider>> create_providers()
         MKENTRY(skraper::SkraperAssetsProvider)
 #endif
         MKENTRY(favorites::Favorites)
+        MKENTRY(completed::Completed)
         MKENTRY(playtime::PlaytimeStats)
     out.shrink_to_fit();
     return out;
