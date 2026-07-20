@@ -22,6 +22,7 @@
 #include "FrontendLayer.h"
 #include "ProcessLauncher.h"
 #include "ScriptRunner.h"
+#include "Paths.h"
 #include "platform/PowerCommands.h"
 #include "types/AppCloseType.h"
 
@@ -58,6 +59,13 @@ void print_metainfo()
         QSysInfo::currentCpuArchitecture(),
         QGuiApplication::platformName()));
     Log::info(LOGMSG("Qt version %1").arg(qVersion()));
+}
+
+void create_config_dirs()
+{
+    QDir configDir(paths::writableConfigDir());
+    if (!configDir.mkpath(QStringLiteral("themes/")))
+        Log::warning(LOGMSG("Failed to automatically create the `themes` directory"));
 }
 
 void register_api_classes()
@@ -150,6 +158,7 @@ Backend::Backend(const CliArgs& args)
 
     Log::init(args.silent);
     print_metainfo();
+    create_config_dirs();
     register_api_classes();
 
     AppSettings::load_providers();
@@ -203,7 +212,7 @@ Backend::Backend(const CliArgs& args)
     QObject::connect(m_api_private->settings().keyEditorPtr(), &model::KeyEditor::keysChanged,
                      m_api_public->keysPtr(), &model::Keys::refresh_keys);
     QObject::connect(m_api_private->settingsPtr(), &model::Settings::providerReloadingRequested,
-                     [this](){ onScanRequested(); });
+                     [this](){ onScanRequested(true); });
 
     QObject::connect(m_api_public, &model::ApiObject::favoritesChanged,
                      [this](){ onFavoritesChanged(); });
@@ -234,13 +243,13 @@ void Backend::start()
 {
     m_api_private->settings().postInit();
     onProcessFinished();
-    onScanRequested();
+    onScanRequested(AppSettings::general.scan_on_launch);
 }
 
-void Backend::onScanRequested()
+void Backend::onScanRequested(const bool force_refresh)
 {
     m_api_public->clearGameData();
-    m_providerman->run();
+    m_providerman->run(force_refresh);
 }
 
 void Backend::onScanFinished()
